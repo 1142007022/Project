@@ -1,0 +1,50 @@
+package kaisheng.project.test;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Test {
+	
+
+	public List<String> jisuan(String str){
+		List<Integer> lists = new ArrayList<Integer>();
+		List<String> strsLists = new ArrayList<String>();
+		String[] strs = str.split(",");
+		for(int i = 0;i < strs.length;i++) {
+			lists.add(Integer.parseInt(strs[i]));
+		}
+		for(int i = 0;i < lists.size() - 1;i++){
+			for(int j = 0;j < lists.size() - j;j++) {
+				int max;
+				int min;
+				if(lists.get(j) <= lists.get(j + 1)) {
+					max = lists.get(j + 1);
+					min = lists.get(j);
+					lists.set(j, max);
+					lists.set(j + 1, min);
+				}
+			}
+		}
+		
+		for(int i = 0;i < lists.size() - 1;i++){
+			String num = String.valueOf(lists.get(i));
+			strsLists.add(i, num + ",");
+		}
+		String num = String.valueOf(lists.get(lists.size() - 1));
+		strsLists.add(num);
+		return strsLists;
+	}
+	
+    public static void main(String[] args) {
+        Test test = new Test();
+        System.out.println("请输入一列数：");
+        Scanner input = new Scanner(System.in);
+        String strs = input.nextLine();
+        ArrayList<String> lists = (ArrayList<String>) test.jisuan(strs);
+        for(int i = 0;i < lists.size();i++) {
+        	System.out.print(lists.get(i));
+        }
+    }
+
+}

@@ -1,0 +1,16 @@
+import java.util.List;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+import kaisheng.project.Dao.AccountDao;
+import kaisheng.project.entity.Account;
+
+public class DaoTest {
+	@Test
+	public void daoTest() {
+		AccountDao dao = new AccountDao();
+		List<Account> lists = dao.findAll();
+		Assert.assertEquals(lists.size(), 13);
+	}
+}

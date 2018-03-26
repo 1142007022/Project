@@ -1,0 +1,122 @@
+package kaisheng.project.Dao;
+
+import java.util.List;
+
+import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
+import org.apache.commons.lang3.StringUtils;
+
+import kaisheng.project.entity.Account;
+import kaisheng.project.utils.JdbcHelp;
+import kaisheng.project.utils.Screen;
+
+public class AccountDao {
+
+	public Account findByMobile(String mobile) {
+		String sql = "select * from t_account where mobile = ?";
+		return JdbcHelp.query(sql, new BeanHandler<>(Account.class), mobile);
+	}
+
+	public void save(Account acc) {
+		String sql = "insert into t_account (username,password,mobile,createtime,updatetime) value (?,?,?,?,?)";
+		JdbcHelp.executeUpdate(sql, acc.getUsername(), acc.getPassword(), acc.getMobile(), acc.getCreateTime(),
+				acc.getUpdateTime());
+	}
+
+	public List<Account> findAllByDeptId(String deptId,int accId) {
+
+		if (StringUtils.isNotEmpty(deptId)) {
+			String sql = "select * from t_account a inner JOIN t_account_dept ad on a.id = ad.aid where ad.pid = ? and a.id != ?";
+
+			return JdbcHelp.query(sql, new BeanListHandler<>(Account.class), deptId,accId);
+		} else {
+			String sql = "select * from t_account where t_account.id != ?";
+
+			return JdbcHelp.query(sql, new BeanListHandler<>(Account.class),accId);
+		}
+
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Account> finByPage(String deptId, int start, int pageSize,int accId) {
+		String sql = "select a.id,a.username,a.mobile,d.deptname from t_account a inner JOIN t_account_dept ad on a.id = ad.aid inner join t_dept d on ad.pid = d.id ";
+		if (StringUtils.isNotEmpty(deptId)) {
+			sql += "Inner join (" 
+					+ "select id from t_account " 
+					+ "inner join t_account_dept "
+					+ "on t_account.id = t_account_dept.aid " 
+					+ "where t_account_dept.pid = ? and t_account.id != ? limit ?,?) "
+					+ "as temp on a.id = temp.id   ORDER BY a.id";
+			// System.out.println("start====="+start);
+			// System.out.println("pageSize======"+pageSize);
+			//
+			// List<Account> lists = (List<Account>) JdbcHelp.query(sql, new
+			// Screen(),deptId,start,pageSize);
+			//
+			// for(Account acc :lists){
+			// System.out.println("name-------"+acc.getUsername());
+			// }
+			//
+			return (List<Account>) JdbcHelp.query(sql, new Screen(), deptId,accId,start, pageSize);
+
+		} else {
+			// System.out.println("else start====="+start);
+			// System.out.println("else pageSize======"+pageSize);
+			sql += "inner join (select id from t_account where t_account.id != ? limit ?,? ) as temp on a.id = temp.id  ORDER BY a.id";
+
+			return (List<Account>) JdbcHelp.query(sql, new Screen(),accId,start, pageSize);
+		}
+
+	}
+
+	public List<Account> findAll() {
+		String sql = "select * from t_account";
+		return JdbcHelp.query(sql, new BeanListHandler<>(Account.class));
+	}
+
+	public Account findById(int accountId) {
+		String sql = "select  t_account.id,username,deptName,password,createTime,updateTime, mobile from t_account inner join t_account_dept on t_account.id = t_account_dept.aid INNER JOIN t_dept on t_account_dept.pid = t_dept.id where t_account.id = ?";
+		return JdbcHelp.query(sql, new BeanHandler<>(Account.class), accountId);
+	}
+
+
+
+	public void changeKey(String password, int id) {
+		String sql = "update t_account set password = ? where id = ?";
+		JdbcHelp.executeUpdate(sql, password,id);
+	}
+
+	public void delById(int accId) {
+		String sql = "delete  from t_account where id = ?";
+		JdbcHelp.executeUpdate(sql, accId);
+	}
+
+	public void editAccount(String username, String mobile, int id) {
+		String sql = "update  t_account set username = ?,mobile = ? where id = ?";
+		JdbcHelp.executeUpdate(sql, username,mobile,id);
+	}
+
+	public void delAccAnddeptByAccId(int id) {
+		String sql = "delete  from t_account_dept where aid = ?";
+		JdbcHelp.executeUpdate(sql, id);
+	}
+
+	public List<Account> finEditAccById(int id) {
+		String sql = "select  t_account.id,username,deptName,password,createTime,updateTime, mobile from t_account inner join t_account_dept on t_account.id = t_account_dept.aid INNER JOIN t_dept on t_account_dept.pid = t_dept.id where t_account.id = ?";
+		return JdbcHelp.query(sql, new BeanListHandler<>(Account.class), id);
+	}
+
+	public int getCountByDeptId(String deptId) {
+		if(StringUtils.isNotEmpty(deptId)){
+			String sql = "select count(*) from t_account_dept  where pid = ?";
+			return JdbcHelp.query(sql, new ScalarHandler<Long>(), deptId).intValue();
+		}else {
+			String sql = "select count(*) from t_account ";
+			return JdbcHelp.query(sql, new ScalarHandler<Long>()).intValue();
+		}
+	}
+
+
+}

@@ -1,0 +1,33 @@
+package kaisheng.project.Servlets.AccountServlet;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import kaisheng.project.Servlets.SuperServlet;
+import kaisheng.project.service.AccountService;
+import kaisheng.project.utils.Result;
+
+@WebServlet("/account/del")
+public class AccountDelServlet extends SuperServlet{
+
+	
+	private static final long serialVersionUID = 1L;
+	AccountService service = new AccountService();
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		String id = req.getParameter("id");
+		int accId = Integer.parseInt(id);
+		
+		service.delById(accId);
+		
+		Result res = Result.success(null);
+		sendJson(res, resp);
+	}
+}
+

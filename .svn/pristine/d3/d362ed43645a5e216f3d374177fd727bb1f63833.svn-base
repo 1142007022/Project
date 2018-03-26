@@ -1,0 +1,27 @@
+package kaisheng.project.Servlets.taskServlet;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import kaisheng.project.Servlets.SuperServlet;
+import kaisheng.project.service.TaskService;
+
+@WebServlet("/task/changeStatus")
+public class ChangeStatusServlet extends SuperServlet{
+	
+	TaskService service = new TaskService();
+	private static final long serialVersionUID = 1L;
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String taskId = req.getParameter("taskId");
+		String status = req.getParameter("status");
+		/*System.out.println("taskId-----"+taskId);
+		System.out.println("status-----"+status);*/
+		service.changeStatus(taskId,status);
+	}
+}

@@ -1,0 +1,14 @@
+package kaisheng.project.test;
+
+public class Test1 {
+	
+	int age = 45;
+	public static void main(){
+		
+	}
+	
+	public void age(){
+		age = 99;
+		System.out.println();
+	}
+}

@@ -1,0 +1,29 @@
+package kaisheng.project.Servlets.saleChance;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import kaisheng.project.Servlets.SuperServlet;
+import kaisheng.project.service.SaleChanceService;
+
+@WebServlet("/sale/del")
+public class SaleChanceDelServlet extends SuperServlet{
+	
+	SaleChanceService service = new SaleChanceService();
+	private static final long serialVersionUID = 1L;
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		String id = req.getParameter("saleId");
+		int saleId = Integer.parseInt(id);
+		
+		service.delSaleChanceById(saleId);
+		
+		resp.sendRedirect("/sale/my/list");
+	}
+}

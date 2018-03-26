@@ -1,0 +1,30 @@
+import org.junit.After;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import kaisheng.project.service.AccountService;
+
+public class ServiceTest {
+	@org.junit.Before
+	public void Before() {
+		System.out.println("测试开始");
+	}
+	
+	/**无论哪种生成日志的方法   都有有Logger   
+	 * 或是直接通过get获得   或者是通过
+	 * LoggerFactory获得
+	 */
+	@Test
+	public void SertviceTest() {
+		AccountService service = new AccountService();
+		Logger logger = LoggerFactory.getLogger(Test.class);
+		logger.info("service执行一次");
+		service.findAccountById(2);
+		service.findAccountById(2);
+	}
+	@After
+	public void After() {
+		System.out.println("测试完成！");
+	}
+}
