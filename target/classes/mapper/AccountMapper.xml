@@ -182,4 +182,32 @@
             id = {id}
     </update>
 
+    <delete id="delAccAnddeptByAccId" parameterType="int">
+        DELETE
+        FROM
+            t_account_dept
+        WHERE
+            aid = #{id}
+    </delete>
+
+    <delete id="delById" parameterType="int">
+        DELETE
+        FROM
+            t_account
+        WHERE
+            id = #{id}
+    </delete>
+
+    <select id="getCountByDeptId" parameterType="string" resultType="java.lang.Integer">
+        SELECT
+            count(*)
+        FROM
+        <if test="deptId == null or deptId == 0">
+            t_account
+        </if>
+        <if test="deptId != null and deptId != 0">
+            t_account_dept  where pid = #{deptId}
+        </if>
+    </select>
+
 </mapper>
