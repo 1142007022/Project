@@ -1,4 +1,4 @@
-package kaisheng.project.Servlets.chartServlet;
+package kaisheng.project.servlets.chartServlet;
 
 import java.io.IOException;
 import java.util.List;

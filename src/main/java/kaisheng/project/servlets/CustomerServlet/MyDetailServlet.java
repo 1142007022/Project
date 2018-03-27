@@ -1,4 +1,4 @@
-package kaisheng.project.Servlets.CustomerServlet;
+package kaisheng.project.servlets.CustomerServlet;
 
 import java.io.IOException;
 import java.util.List;
