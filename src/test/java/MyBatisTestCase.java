@@ -35,12 +35,22 @@ public class MyBatisTestCase {
            user.setTel("123"+i);
            sqlSession.getMapper(UserMapper.class).insert(user);
        }*/
-        UserExample example = new UserExample();
+      /*  UserExample example = new UserExample();
         List<User> lists = sqlSession.getMapper(UserMapper.class).selectByExample(example);
         for(User user : lists) {
             System.out.println(user);
-        }
+        }*/
 
+        /*User user= sqlSession.getMapper(UserMapper.class).selectByPrimaryKey(2);
+        System.out.println(user.getName());*/
+
+        UserExample example = new UserExample();
+        /*example.createCriteria().andNameEqualTo("jiangdong");*/
+        example.createCriteria().andNameLike("%jiangdong%");
+        List<User> lists = sqlSession.getMapper(UserMapper.class).selectByExample(example);
+        for(User user : lists) {
+            System.out.println(user.getName());
+        }
     }
 
     @After

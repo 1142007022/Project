@@ -9,20 +9,21 @@ import java.io.Reader;
 
 public class SqlSessionManger {
     private static SqlSessionFactory sqlSessionFactory;
-    static{
-        try{
+
+    static {
+        try {
             Reader reader = Resources.getResourceAsReader("mybatis.xml");
             sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static SqlSessionFactory getSqlSessionFactory(){
+    public static SqlSessionFactory getSqlSessionFactory() {
         return sqlSessionFactory;
     }
 
-    public static SqlSession getSqlSession(boolean auto){
+    public static SqlSession getSqlSession(boolean auto) {
         return sqlSessionFactory.openSession(auto);
     }
 }
